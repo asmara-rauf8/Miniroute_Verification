@@ -4,12 +4,6 @@
 // Author : Asmara Rauf
 // Creation Date : 08/20/2024
 //
-// No portions of this material may be reproduced in any form without
-// the written permission of CoMira solutions Inc.
-//
-// All information contained in this document is CoMira solutions
-// private, proprietary and trade secret.
-//
 // Description
 // ===========
 // This module contains invalid request packet sequence for simulation extended from uvm_sequence base component.

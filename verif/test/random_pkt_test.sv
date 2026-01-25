@@ -4,12 +4,6 @@
 // Author : Asmara Rauf
 // Creation Date : 08/20/2024
 //
-// No portions of this material may be reproduced in any form without
-// the written permission of CoMira solutions Inc.
-//
-// All information contained in this document is CoMira solutions
-// private, proprietary and trade secret.
-//
 // Description
 // ===========
 // This module contains Error/random packets, to test dut in case of invalid random packets, extended from uvm_test base component.
