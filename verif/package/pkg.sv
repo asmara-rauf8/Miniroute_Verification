@@ -4,12 +4,6 @@
 // Author : Asmara Rauf
 // Creation Date : 07/31/2024
 //
-// No portions of this material may be reproduced in any form without
-// the written permission of CoMira solutions Inc.
-//
-// All information contained in this document is CoMira solutions
-// private, proprietary and trade secret.
-//
 // Description
 // ===========
 // This module is a package file which contains all the required components for the verification of miniroute, macros and uvm package.

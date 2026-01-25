@@ -4,12 +4,6 @@
 // Author : Asmara Rauf
 // Creation Date : 07/31/2024
 //
-// No portions of this material may be reproduced in any form without
-// the written permission of CoMira solutions Inc.
-//
-// All information contained in this document is CoMira solutions
-// private, proprietary and trade secret.
-//
 // Description
 // ===========
 // This module contains MiniRoute transactions extended from uvm_sequence_item base component.

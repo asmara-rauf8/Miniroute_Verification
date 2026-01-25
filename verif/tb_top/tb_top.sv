@@ -4,12 +4,6 @@
 // Author : Asmara Rauf
 // Creation Date : 08/01/2024
 //
-// No portions of this material may be reproduced in any form without
-// the written permission of CoMira solutions Inc.
-//
-// All information contained in this document is CoMira solutions
-// private, proprietary and trade secret.
-//
 // Description
 // ===========
 // This module is the top testbench module used for the verification of MiniRoute. 
