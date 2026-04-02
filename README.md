@@ -4,17 +4,13 @@
 
 MiniRoute is a 4-port router/switch design that accepts 64-bit packets on its input ports and forwards them to the appropriate output ports based on packet type, source address, destination address, and configuration state.
 
-This repository contains the verification environment of the MiniRoute design together with the DUT RTL. This verification environment can:
+This repository contains the verification environment of the MiniRoute design together with the DUT RTL. This verification environment verifies:
 
-- generate packet traffic on all four MiniRoute input ports
-- drive reset and verify post-reset behavior
-- monitor both DUT input-side and output-side packet activity
-- verify one-to-one, multicast, and broadcast packet routing
-- verify configuration request and configuration update flows
-- validate checksum handling and address-related error reporting
-- track scoreboard pass/fail counts for normal and error scenarios
-
-This repository includes the MiniRoute RTL under `design/MiniRoute/design`. The UVM testbench instantiates the DUT in `tb_top` and connects four verification interfaces plus a reset interface directly to the design.
+- reset behavior across the four ports environment
+- valid broadcast, multicast, and one-to-one routing
+- configuration request and configuration confirmation handling
+- random traffic generation across multiple ports in parallel
+- invalid source, destination, checksum, and configuration scenarios
 
 ## MiniRoute Ports
 
@@ -53,23 +49,13 @@ At reset, the scoreboard and tests assume the following default logical addresse
 - `port_2 = 8'hFC`
 - `port_3 = 8'hFD`
 
-The verification environment also tracks per-port configuration state for:
+The verification environment also tracks per port configuration state for:
 
 - device connection enable
 - broadcast enable
 - configured logical address
 
-Configuration traffic is sent first as a request packet (`F4`) and then as a configuration packet (`F5`). The scoreboard expects the DUT to return response/confirmation packets and updates its internal port-state model accordingly.
-
-## Verification Scope
-
-The current verification environment focuses on functional packet routing and protocol-level response checking. In the existing tests, it verifies:
-
-- reset behavior across the four-port environment
-- valid broadcast, multicast, and one-to-one routing
-- configuration request and configuration confirmation handling
-- random traffic generation across multiple ports in parallel
-- invalid source, destination, checksum, and configuration scenarios
+Configuration traffic is sent first as a request packet (`F4`) and then as a configuration packet (`F5`). The scoreboard expects the DUT to return response/confirmation packets and updates its internal port state model accordingly.
 
 ## 3. Verification Architecture
 
@@ -81,12 +67,11 @@ Key Components
 
 - Port Agents: one UVM agent per DUT port for stimulus generation and monitoring
 - Reset Agent: drives and monitors the DUT reset signal
-- Drivers: serialize 64-bit packet transactions into 8-bit input-port transfers
+- Drivers: serialize 64-bit packet transactions into 8-bit input port transfers
 - Sequencers: provide packet and reset transactions to the drivers
-- Input Monitors: reconstruct packets entering the DUT on each port
-- Output Monitors: reconstruct packets leaving the DUT on each port
+- Monitors: reconstruct packets entering or leaving the DUT on each port
 - Scoreboard: predicts routing behavior, compares DUT outputs, and tracks pass/fail counters
-- Environment: instantiates four data-port agents, one reset agent, and the shared scoreboard
+- Environment: instantiates four data port agents, one reset agent, and the shared scoreboard
 
 ## 4. MiniRoute Interface Signals
 
@@ -95,7 +80,7 @@ The signal list below summarizes the main interface signals relevant to this rep
 | Signal | Direction | Description |
 | --- | --- | --- |
 | `clk` | Input | Main simulation clock |
-| `reset` | Input | Active-low style reset stimulus driven through `reset_intf` |
+| `reset` | Input | Active low reset stimulus driven through `reset_intf` |
 | `port_in_x_valid` | Input | Indicates that the current input byte is valid |
 | `port_in_x_data[7:0]` | Input | Serialized input packet byte stream for a given port |
 | `port_in_x_success` | Output | Indicates that the DUT accepted the full input packet |
@@ -105,7 +90,7 @@ The signal list below summarizes the main interface signals relevant to this rep
 
 ## 5. Test Suite
 
-At present, the repository contains the following tests:
+The repository contains the following tests:
 
 | Test Name | Description |
 | --- | --- |
@@ -113,13 +98,6 @@ At present, the repository contains the following tests:
 | `configuration_test` | Stresses configuration request/configuration packet handling with randomized traffic mixes and repeated address/configuration updates. |
 | `random_reset_test` | Inserts randomized resets between traffic phases and checks that the environment returns to the expected default addressing state. |
 | `random_pkt_test` | Mixes valid traffic with randomized invalid request, configuration, and payload packets to exercise DUT error handling and scoreboard checks. |
-
-Future Work
-
-- add functional coverage collection
-- add more directed tests for each packet type and error mode
-- document packet-field encoding and expected DUT responses in more detail
-- expand regression automation beyond the single default `run.do` flow
 
 ## 6. How to Run
 
